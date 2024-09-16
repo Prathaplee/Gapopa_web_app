@@ -1,16 +1,35 @@
-# pixabay_gallery
+# Gapopa Image Gallery
 
-A new Flutter project.
+Gapopa is a Flutter-based image gallery app that works across multiple platforms including iOS, Android, Web, and Desktop. The app allows users to search and browse images, load more content as they scroll, and view images in fullscreen.
+
+## Features
+
+- **Cross-Platform Support**: Runs on Android, iOS, Web, Windows, macOS, and Linux.
+- **Search Functionality**: Users can search for images by entering a query in the search bar.
+- **Lazy Loading**: Automatically loads more images as users scroll down the page.
+- **Fullscreen View**: Clicking on an image opens it in fullscreen mode, allowing for a closer look at the image.
+- **Likes and Views Count**: Each image displays the number of likes and views.
+
+## Web Version
+
+The web version of this application is deployed on GitHub Pages.
+
+- **Live App**: [Gapopa Image Gallery Web](https://prathaplee.github.io/Gapopa_web_app/)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To run this project on your local machine, follow the instructions below.
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Make sure you have the following installed:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Flutter SDK](https://flutter.dev/docs/get-started/install)
+- A code editor like [Visual Studio Code](https://code.visualstudio.com/) or [Android Studio](https://developer.android.com/studio)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Prathaplee/Gapopa_web_app.git
+   cd Gapopa_web_app
