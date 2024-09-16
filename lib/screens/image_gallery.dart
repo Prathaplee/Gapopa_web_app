@@ -22,28 +22,29 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final imageProvider =
       Provider.of<ImageProviderModel>(context, listen: false);
+      // Fetch initial images when the widget is first built
       imageProvider.fetchImages();
 
+      // Add listener to detect scroll position for lazy loading
       _scrollController.addListener(() {
-        if (_scrollController.position.extentAfter < 100) { // Changed to 100
+        if (_scrollController.position.extentAfter < 100) { // Trigger when close to the bottom
           print('Loading more images...');
           imageProvider.loadMoreImages();
         }
       });
-
-
     });
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
-    _scrollController.dispose();
-    _debounce?.cancel();
+    _searchController.dispose(); // Clean up the search controller
+    _scrollController.dispose(); // Clean up the scroll controller
+    _debounce?.cancel(); // Cancel any pending debounce timers
     super.dispose();
   }
 
   void _onSearchChanged(String query) {
+    // Debounce the search input to avoid excessive API calls
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
       print('Search Query: $query'); // Debug log for search query
@@ -80,14 +81,14 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
                 : GridView.builder(
               controller: _scrollController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount:
-                (MediaQuery.of(context).size.width / 150).floor(),
+                crossAxisCount: (MediaQuery.of(context).size.width / 150).floor(),
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4,
               ),
               itemCount: imageProvider.images.length +
                   (imageProvider.isLoading ? 1 : 0),
               itemBuilder: (context, index) {
+                // Show a loading indicator if we are fetching more images
                 if (index == imageProvider.images.length) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -101,34 +102,23 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
                   ),
                   child: GridTile(
                     footer: Container(
-                      color: Colors.black45,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 4.0, horizontal: 8.0),
+                      color: Colors.black45, // Background color for footer
+                      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0), // Add padding
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space items evenly
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.thumb_up,
-                                  color: Colors.white, size: 16),
+                              const Icon(Icons.thumb_up, color: Colors.white, size: 16),
                               const SizedBox(width: 4),
-                              Text(
-                                '${image['likes']}',
-                                style:
-                                const TextStyle(color: Colors.white),
-                              ),
+                              Text('${image['likes']}', style: const TextStyle(color: Colors.white)),
                             ],
                           ),
                           Row(
                             children: [
-                              const Icon(Icons.visibility,
-                                  color: Colors.white, size: 16),
+                              const Icon(Icons.visibility, color: Colors.white, size: 16),
                               const SizedBox(width: 4),
-                              Text(
-                                '${image['views']}',
-                                style:
-                                const TextStyle(color: Colors.white),
-                              ),
+                              Text('${image['views']}', style: const TextStyle(color: Colors.white)),
                             ],
                           ),
                         ],
@@ -136,10 +126,8 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
                     ),
                     child: CachedNetworkImage(
                       imageUrl: image['webformatURL'],
-                      placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                      const Icon(Icons.error),
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -164,15 +152,14 @@ class FullScreenImage extends StatelessWidget {
       backgroundColor: Colors.black,
       body: GestureDetector(
         onTap: () {
-          Navigator.pop(context);
+          Navigator.pop(context); // Close the full screen view when tapped
         },
         child: Center(
           child: Hero(
-            tag: image['id'],
+            tag: image['id'], // Use the image id for the hero animation
             child: CachedNetworkImage(
               imageUrl: image['largeImageURL'],
-              placeholder: (context, url) =>
-              const Center(child: CircularProgressIndicator()),
+              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
               errorWidget: (context, url, error) => const Icon(Icons.error),
               fit: BoxFit.contain,
             ),
