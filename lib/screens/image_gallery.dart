@@ -143,9 +143,7 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
 
 class FullScreenImage extends StatelessWidget {
   final dynamic image;
-
   const FullScreenImage({super.key, required this.image});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
